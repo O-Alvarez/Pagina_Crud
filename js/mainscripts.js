@@ -43,6 +43,7 @@ function buscarTodo() {
       return response.json();
     })
     .then((data) => {
+      data.shift();
       mostrarPeliculas(data); // Se pasa 'data' a la función
     })
     .catch((error) => {
@@ -65,7 +66,7 @@ function mostrarPeliculas(data) {
 
   data.forEach((element) => {
     // Limitar la descripción a un máximo de 30 palabras
-    const maxWords = 30;
+    const maxWords = 10;
     const words = element.description.split(" ");
     let shortDescription;
 
@@ -96,14 +97,14 @@ function mostrarPeliculas(data) {
           <li class="list-group-item">ID: ${element.imdbID}</li>
         </ul>
         <div class="card-body row">
-          <button type="button" class="btn btn-danger col-5 m-2 eliminar-btn" data-imdbid="${element.imdbID}">Eliminar</button>
+          <button type="button" class="btn btn-danger col-5 m-2 eliminar-btn" data-imdbid="${
+            element.imdbID
+          }">Eliminar</button>
           <button type="button" class="btn btn-warning col-5 m-2 editar-btn" data-imdbid="${
             element.imdbID
           }" data-title="${element.Title}" data-description="${
       element.description
-    }" data-type="${element.Type}" data-estado="${
-      element.Estado
-    }"
+    }" data-type="${element.Type}" data-estado="${element.Estado}"
       data-poster="${element.Poster}"
     >Editar</button>
         </div>
@@ -122,22 +123,20 @@ function mostrarPeliculas(data) {
       const type = this.getAttribute("data-type");
       const estado = this.getAttribute("data-estado");
       const poster = this.getAttribute("data-poster");
-    
-      
-    // actualiza los datos del edicion
-     document.getElementById("editTitle").value = title;
-     document.getElementById("editDescription").value = description;
-     document.getElementById("editPoster").value = poster;       
-    // actualiza el poster edicion
-    updateEditPoster();    
-    
-     //mostrar el modal edicion con los datos
-    document.getElementById("modal_editar").setAttribute("data-imdbid", imdbID); 
-     let modal = new bootstrap.Modal(
-        document.getElementById("modal_editar")
-     );
-     modal.show();
-        
+
+      // actualiza los datos del edicion
+      document.getElementById("editTitle").value = title;
+      document.getElementById("editDescription").value = description;
+      document.getElementById("editPoster").value = poster;
+      // actualiza el poster edicion
+      updateEditPoster();
+
+      //mostrar el modal edicion con los datos
+      document
+        .getElementById("modal_editar")
+        .setAttribute("data-imdbid", imdbID);
+      let modal = new bootstrap.Modal(document.getElementById("modal_editar"));
+      modal.show();
     });
   });
 
@@ -145,13 +144,15 @@ function mostrarPeliculas(data) {
   document.querySelectorAll(".eliminar-btn").forEach((button) => {
     button.addEventListener("click", function () {
       const imdbID = this.getAttribute("data-imdbid");
-      const linkdelete=`https://movie.azurewebsites.net/api/cartelera?imdbID=${imdbID}`;
+      const linkdelete = `https://movie.azurewebsites.net/api/cartelera?imdbID=${imdbID}`;
       fetch(linkdelete, {
         method: "DELETE",
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error(`Network response was not ok ${response.statusText}`);
+            throw new Error(
+              `Network response was not ok ${response.statusText}`
+            );
           }
           return response.json();
         })
@@ -174,19 +175,16 @@ function mostrarPeliculas(data) {
           );
           errorModal.show();
         });
-
     });
   });
-
-
 }
 
-function updateEditPoster(){
-    const titulo = document.getElementById("editTitle").value;
-    const poster = document.getElementById("editPoster").value;
-    const descripcion = document.getElementById("editDescription").value;
+function updateEditPoster() {
+  const titulo = document.getElementById("editTitle").value;
+  const poster = document.getElementById("editPoster").value;
+  const descripcion = document.getElementById("editDescription").value;
 
-    document.getElementById("editcard").innerHTML = `
+  document.getElementById("editcard").innerHTML = `
     <div class="card" style="width: 18rem">
                   <img src="${poster}" class="card-img-top" id="editImg" alt="..." />
                   <div class="card-body">
@@ -196,9 +194,111 @@ function updateEditPoster(){
                     </p>
                   </div>
                 </div>
-    `
+    `;
+}
+
+function addNewMovie() {
+    const title = document.getElementById("newTitle").value;
+    const description = document.getElementById("newDescription").value;
+    const poster = document.getElementById("newPoster").value;
+    
+    if (poster == "") {
+        poster = "imgs/cargar.png";
+    }
+    
+    ID = Math.random().toString(36).substr(2, 9);
+
+    const newMovie = {
+        imdbID:ID,
+        Title: title,
+        Year: "2021",
+        Type: "Action",
+        Poster: poster,
+        description: description,
+        Estado: 1,
+        Ubication: "Cinepolis"
+    };
+    
+    fetch("https://movie.azurewebsites.net/api/cartelera", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newMovie),
+    })
+        .then((response) => {
+        if (!response.ok) {
+            throw new Error(`Network response was not ok ${response.statusText}`);
+        }
+        return response.json();
+        })
+        .then((data) => {
+        buscarTodo();
+        const errorModal = new bootstrap.Modal(
+            document.getElementById("modal_agregar")
+        );
+        errorModal.hide();
+        })
+        .catch((error) => {
+        console.error("Hubo un error al generar la petición:", error);
+    
+        // Mostrar el modal con el mensaje de error
+        const errorMessage = document.getElementById("errorMessage");
+        errorMessage.textContent = `Error: ${error.message}`;
+    
+        const errorModal = new bootstrap.Modal(
+            document.getElementById("errorModal")
+        );
+        errorModal.show();
+        });
 
 
+}
+
+function updateCardNewMovie() {
+  const title = document.getElementById("newTitle").value;
+  const description = document.getElementById("newDescription").value;
+  const poster = document.getElementById("newPoster").value;
+
+  if ( poster == "" ){
+    poster = "imgs/cargar.png";
+  }
 
 
+  let card = document.getElementById("cardNewMovie");
+  card.innerHTML = `
+    <div class="card" style="width: 18rem">
+    <img src="${poster}" class="card-img-top" alt="..." />
+    <div class="card-body">
+           <h5 class="card-title">${title}</h5>
+            <p class="card-text">
+                ${description}
+         </p>
+    </div>
+    </div>
+    `;
+}
+
+function actualizarPelicula() {
+
+}
+
+
+function resetearagregar(){
+     document.getElementById("newTitle").value = " ";
+     document.getElementById("newDescription").value = " ";
+     document.getElementById("newPoster").value = " ";
+
+    let card = document.getElementById("cardNewMovie");
+    card.innerHTML = `
+    <div class="card" style="width: 18rem">
+        <img src="imgs/cargar.png" class="card-img-top" alt="..." />
+         <div class="card-body">
+             <h5 class="card-title">Titulo de la pelicula</h5>
+             <p class="card-text">
+                jemplo de descripcion de la pelicula
+             </p>
+         </div>
+     </div>
+    `;
 }

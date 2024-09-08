@@ -42,7 +42,7 @@
 
     <div class="container mt-5">
         <div class="Agregar_pelicula d-flex align-items-center justify-content-center">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_agregar">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_agregar" onclick="resetearagregar()" >
                 <div class="card" style="width: 18rem">
                     <img src="imgs/cargar.png" class="card-img-top" alt="..." />
                     <div class="card-body">
@@ -58,7 +58,7 @@
                             <h5 class="modal-title" id="staticBackdropLabel">
                                 Agregar Nueva Pelicula
                             </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"aria-label="Close"></button>
                         </div>
 
                         <!-- MODAL PARA AGREGAR PELICULA -->
@@ -67,41 +67,43 @@
                                 <form class="col-6">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Titulo</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp" />
+                                        <input type="text" class="form-control" id="newTitle" onchange="updateCardNewMovie()"/>
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Descripcion</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                        <input type="email" class="form-control" id="newDescription"  onchange="updateCardNewMovie()"
                                             aria-describedby="emailHelp" />
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Link poster</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                        <input type="email" class="form-control" id="newPoster"  onchange="updateCardNewMovie()"
                                             aria-describedby="emailHelp" />
                                     </div>
-                                    <select class="form-select mb-3" aria-label="Default select example">
-                                        <option selected>Año</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                    <select class="form-select" aria-label="Default select example">
+                                    <select class="form-select mb-3" id="newType"  onchange="updateCardNewMovie()">
                                         <option selected>Tipo</option>
                                         <option value="1">One</option>
                                         <option value="2">Two</option>
                                         <option value="3">Three</option>
                                     </select>
+                                    <select class="form-select  mb-3" id="newId"  onchange="updateCardNewMovie()">
+                                        <option selected>Año</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                    <select class="form-select" id="newStatus"  onchange="updateCardNewMovie()">
+                                        <option value="1" selected>En cartelera</option>
+                                        <option value="2">Fuera de cartelera</option>
+                                    </select>
                                 </form>
 
-                                <div class="col-6 d-flex align-items-center justify-content-center">
+                                <div class="col-6 d-flex align-items-center justify-content-center" id="cardNewMovie">
                                     <div class="card" style="width: 18rem">
                                         <img src="imgs/cargar.png" class="card-img-top" alt="..." />
                                         <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
+                                            <h5 class="card-title">Titulo de la pelicula</h5>
                                             <p class="card-text">
-                                                Some quick example text to build on the card title and
-                                                make up the bulk of the card's content.
+                                                Ejemplo de descripcion de la pelicula
                                             </p>
                                         </div>
                                     </div>
@@ -112,7 +114,7 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                 Cancelar
                             </button>
-                            <button type="button" class="btn btn-primary">Agregar</button>
+                            <button type="button" class="btn btn-primary" onclick="addNewMovie()">Agregar</button>
                         </div>
                     </div>
                 </div>

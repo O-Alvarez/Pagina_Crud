@@ -96,7 +96,7 @@ function mostrarPeliculas(data) {
           <li class="list-group-item">ID: ${element.imdbID}</li>
         </ul>
         <div class="card-body row">
-          <button type="button" class="btn btn-danger col-5 m-2">Eliminar</button>
+          <button type="button" class="btn btn-danger col-5 m-2 eliminar-btn" data-imdbid="${element.imdbID}">Eliminar</button>
           <button type="button" class="btn btn-warning col-5 m-2 editar-btn" data-imdbid="${
             element.imdbID
           }" data-title="${element.Title}" data-description="${
@@ -122,7 +122,6 @@ function mostrarPeliculas(data) {
       const type = this.getAttribute("data-type");
       const estado = this.getAttribute("data-estado");
       const poster = this.getAttribute("data-poster");
-
     
       
     // actualiza los datos del edicion
@@ -141,6 +140,45 @@ function mostrarPeliculas(data) {
         
     });
   });
+
+  // boton para eliminar
+  document.querySelectorAll(".eliminar-btn").forEach((button) => {
+    button.addEventListener("click", function () {
+      const imdbID = this.getAttribute("data-imdbid");
+      const linkdelete=`https://movie.azurewebsites.net/api/cartelera?imdbID=${imdbID}`;
+      fetch(linkdelete, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Network response was not ok ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          buscarTodo();
+          const errorModal = new bootstrap.Modal(
+            document.getElementById("modal_eliminar")
+          );
+          errorModal.show();
+        })
+        .catch((error) => {
+          console.error("Hubo un error al generar la petición:", error);
+
+          // Mostrar el modal con el mensaje de error
+          const errorMessage = document.getElementById("errorMessage");
+          errorMessage.textContent = `Error: ${error.message}`;
+
+          const errorModal = new bootstrap.Modal(
+            document.getElementById("errorModal")
+          );
+          errorModal.show();
+        });
+
+    });
+  });
+
+
 }
 
 function updateEditPoster(){

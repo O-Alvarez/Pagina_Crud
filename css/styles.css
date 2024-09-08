@@ -1,0 +1,230 @@
+
+.banner-background{
+    background-image: url('../imgs/banner.jpg');
+    background-size: cover;
+    /* background-position: center; */
+    background-repeat: no-repeat;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.Logo{
+    width: 2%;
+    margin-right: 5px;
+}
+.modal-dialog {
+    max-width: 70%;
+}
+
+/* Asegura que todas las tarjetas de película tengan el mismo tamaño */
+.card-pelicula {
+    width: 18rem; /* Establece un ancho fijo para todas las tarjetas */
+    height: 100%; /* Asegura que todas las tarjetas llenen su contenedor */
+    display: flex;
+    flex-direction: column; /* Organiza el contenido verticalmente */
+    justify-content: space-between; /* Distribuye el contenido de manera uniforme */
+    min-height: 450px; /* Altura mínima consistente */
+  }
+  
+  /* Asegura que la imagen tenga un tamaño fijo dentro de la tarjeta */
+  .card-pelicula .card-img-top {
+    height: 150px;
+  }
+  
+  /* La body-card-pelicula crece para llenar el espacio disponible */
+  .body-card-pelicula {
+    flex-grow: 1; /* Permite que el cuerpo de la tarjeta ocupe el espacio disponible */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Asegura que todos los botones dentro de las tarjetas tengan el mismo tamaño */
+  .card-pelicula .btn {
+    width: 100%; /* Los botones ocuparán todo el ancho de la tarjeta */
+    margin: 5px 0; /* Espaciado entre botones */
+  }
+  
+
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  
+  /* Navbar */
+  .navbar {
+    background-color: #343a40;
+  }
+  
+  .navbar-brand {
+    color: #f0ad4e;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .navbar-brand:hover {
+    color: #ffc107;
+  }
+  
+  .navbar-nav .nav-link {
+    color: #fff;
+  }
+  
+  .navbar-nav .nav-link.active {
+    color: #ffc107;
+  }
+  
+  /* Banner */
+  .banner-background {
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.6),
+        rgba(0, 0, 0, 0.6)
+      ),
+      url('imgs/banner-cine.jpg') center/cover no-repeat;
+    height: 250px;
+  }
+  
+  .banner h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  
+  /* Botón agregar película */
+  .Agregar_pelicula .btn {
+    background-color: #f0ad4e;
+    border: none;
+  }
+  
+  .Agregar_pelicula .btn:hover {
+    background-color: #ffc107;
+  }
+  
+  .Agregar_pelicula .card {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .Agregar_pelicula .card:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Estilo de tarjetas de películas */
+  #cartelera .card {
+    width: 18rem;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+    background-color: #fff;
+  }
+  
+  #cartelera .card:hover {
+    transform: scale(1.03);
+  }
+  
+  #cartelera .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  #cartelera .card-body p {
+    font-size: 0.9rem;
+    height: 60px; /* Para mantener la descripción alineada */
+    overflow: hidden;
+  }
+  
+  #cartelera .list-group-item {
+    background-color: #f8f9fa;
+  }
+  
+  #cartelera .btn {
+    font-size: 0.85rem;
+    padding: 10px;
+  }
+  
+  .btn-danger {
+    background-color: #d9534f;
+  }
+  
+  .btn-warning {
+    background-color: #f0ad4e;
+    color: #fff;
+  }
+  
+  /* Estilos de modales */
+  .modal-content {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .modal-header {
+    background-color: #343a40;
+    color: #fff;
+  }
+  
+  .modal-footer .btn-primary {
+    background-color: #f0ad4e;
+    border: none;
+  }
+  
+  .modal-footer .btn-primary:hover {
+    background-color: #ffc107;
+  }
+  
+  .modal-footer .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+  }
+  
+  /* Texto y subtitulos */
+  .subtitulo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 30px;
+  }
+  
+  /* Buscador */
+  #busqueda {
+    border-radius: 30px;
+    padding: 10px 20px;
+    border: 1px solid #ced4da;
+  }
+  
+  .btn-outline-success {
+    border-color: #f0ad4e;
+    color: #f0ad4e;
+  }
+  
+  .btn-outline-success:hover {
+    background-color: #f0ad4e;
+    color: #fff;
+  }
+  
+  /* Responsivo */
+  @media (max-width: 768px) {
+    .Agregar_pelicula .card {
+      width: 100%;
+    }
+  
+    #cartelera .card {
+      width: 100%;
+    }
+  }
+  
+
+
+  /* Ajuste adicional para dispositivos móviles */
+  @media (max-width: 576px) {
+    .card-pelicula {
+      width: 100%; /* Para pantallas pequeñas, las tarjetas ocuparán todo el ancho */
+      min-height: auto; /* Se ajusta en pantallas pequeñas */
+    }
+  }
+  

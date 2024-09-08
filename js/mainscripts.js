@@ -234,10 +234,7 @@ function addNewMovie() {
         })
         .then((data) => {
         buscarTodo();
-        const errorModal = new bootstrap.Modal(
-            document.getElementById("modal_agregar")
-        );
-        errorModal.hide();
+           document.getElementById("cancelarAdicion").click(); 
         })
         .catch((error) => {
         console.error("Hubo un error al generar la petición:", error);

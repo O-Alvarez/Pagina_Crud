@@ -82,29 +82,24 @@ function mostrarPeliculas(data) {
 
     const peliculaCard = `
       <div class="card card-pelicula m-2" style="width: 18rem;">
-        <img src="${
-          element.Poster
-        }" class="card-img-top" alt="Poster de la película">
+        <img src="${element.Poster
+      }" class="card-img-top" alt="Poster de la película">
         <div class="card-body body-card-pelicula">
           <h5 class="card-title">${element.Title}</h5>
           <p class="card-text">${shortDescription}</p>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Género: ${element.Type}</li>
-          <li class="list-group-item">Estado: ${
-            element.Estado == 1 ? "En cartelera" : "Fuera de cartelera"
-          } </li>
+          <li class="list-group-item">Estado: ${element.Estado == 1 ? "En cartelera" : "Fuera de cartelera"
+      } </li>
           <li class="list-group-item">ID: ${element.imdbID}</li>
         </ul>
         <div class="card-body row">
-          <button type="button" class="btn btn-danger col-5 m-2 eliminar-btn" data-imdbid="${
-            element.imdbID
-          }">Eliminar</button>
-          <button type="button" class="btn btn-warning col-5 m-2 editar-btn" data-imdbid="${
-            element.imdbID
-          }" data-title="${element.Title}" data-description="${
-      element.description
-    }" data-type="${element.Type}" data-estado="${element.Estado}"
+          <button type="button" class="btn btn-danger col-5 m-2 eliminar-btn" data-imdbid="${element.imdbID
+      }">Eliminar</button>
+          <button type="button" class="btn btn-warning col-5 m-2 editar-btn" data-imdbid="${element.imdbID
+      }" data-title="${element.Title}" data-description="${element.description
+      }" data-type="${element.Type}" data-estado="${element.Estado}"
       data-poster="${element.Poster}"
     >Editar</button>
         </div>
@@ -198,66 +193,74 @@ function updateEditPoster() {
 }
 
 function addNewMovie() {
-    const title = document.getElementById("newTitle").value;
-    const description = document.getElementById("newDescription").value;
-    const poster = document.getElementById("newPoster").value;
-    
-    if (poster == "") {
-        poster = "imgs/cargar.png";
-    }
-    
-    ID = Math.random().toString(36).substr(2, 9);
+  const title = document.getElementById("newTitle").value;
+  const description = document.getElementById("newDescription").value;
+  const poster = document.getElementById("newPoster").value;
 
-    const newMovie = {
-        imdbID:ID,
-        Title: title,
-        Year: "2021",
-        Type: "Action",
-        Poster: poster,
-        description: description,
-        Estado: 1,
-        Ubication: "Cinepolis"
-    };
-    
-    fetch("https://movie.azurewebsites.net/api/cartelera", {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newMovie),
+  if (poster == "") {
+    poster = "imgs/cargar.png";
+  }
+
+  ID = Math.random().toString(36).substr(2, 9);
+
+  const newMovie = {
+    imdbID: ID,
+    Title: title,
+    Year: "2021",
+    Type: "Action",
+    Poster: poster,
+    description: description,
+    Estado: 1,
+    Ubication: "Cinepolis"
+  };
+
+  fetch("https://movie.azurewebsites.net/api/cartelera", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newMovie),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Network response was not ok ${response.statusText}`);
+      }
+      return response.json();
     })
-        .then((response) => {
-        if (!response.ok) {
-            throw new Error(`Network response was not ok ${response.statusText}`);
-        }
-        return response.json();
-        })
-        .then((data) => {
-        buscarTodo();
-           document.getElementById("cancelarAdicion").click(); 
-        })
-        .catch((error) => {
-        console.error("Hubo un error al generar la petición:", error);
-    
-        // Mostrar el modal con el mensaje de error
-        const errorMessage = document.getElementById("errorMessage");
-        errorMessage.textContent = `Error: ${error.message}`;
-    
+    .then((data) => {
+      buscarTodo();
+      document.getElementById("cancelarAdicion").click();
+      setTimeout(() => {
         const errorModal = new bootstrap.Modal(
-            document.getElementById("errorModal")
+          document.getElementById("modal_agregarexitoso")
         );
         errorModal.show();
-        });
+      }, 300);
+
+    })
+    .catch((error) => {
+      console.error("Hubo un error al generar la petición:", error);
+
+      // Mostrar el modal con el mensaje de error
+      const errorMessage = document.getElementById("errorMessage");
+      errorMessage.textContent = `Error: ${error.message}`;
+
+      const errorModal = new bootstrap.Modal(
+        document.getElementById("errorModal")
+      );
+      errorModal.show();
+    });
 
 
 }
+
 
 function updateCardNewMovie() {
   const title = document.getElementById("newTitle").value;
   const description = document.getElementById("newDescription").value;
   const poster = document.getElementById("newPoster").value;
 
-  if ( poster == "" ){
+  if (poster == "") {
     poster = "imgs/cargar.png";
   }
 
@@ -277,17 +280,70 @@ function updateCardNewMovie() {
 }
 
 function actualizarPelicula() {
+  const titulo = document.getElementById("editTitle").value
+  const descripcion = document.getElementById("editDescription")
+  const linkposter = document.getElementById("editPoster")
+  const id = document.getElementById("modal_editar").getAttribute("data-imdbid")
+  const linkupdate = `https://movie.azurewebsites.net/api/cartelera?imdbID=${id}`;
+  if (linkposter == "") {
+    linkposter = "imgs/cargar.png";
+  }
 
+  const updateMovie = {
+    imdbID: id,
+    Title: titulo,
+    Year: "2021",
+    Type: "Action",
+    Poster: linkposter,
+    description: descripcion,
+    Estado: 1,
+    Ubication: "Cinepolis"
+  }; 
+
+  fetch (linkupdate,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updateMovie),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Network response was not ok ${response.statusText}`);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    buscarTodo();
+    setTimeout(() => {
+      const errorModal = new bootstrap.Modal(
+        document.getElementById("modal_agregarexitoso")
+      );
+      errorModal.show();
+    }, 300);
+
+  })
+  .catch((error) => {
+    console.error("Hubo un error al generar la petición:", error);
+
+    // Mostrar el modal con el mensaje de error
+    const errorMessage = document.getElementById("errorMessage");
+    errorMessage.textContent = `Error: ${error.message}`;
+
+    const errorModal = new bootstrap.Modal(
+      document.getElementById("errorModal")
+    );
+    errorModal.show();
+  });
 }
 
 
-function resetearagregar(){
-     document.getElementById("newTitle").value = " ";
-     document.getElementById("newDescription").value = " ";
-     document.getElementById("newPoster").value = " ";
+function resetearagregar() {
+  document.getElementById("newTitle").value = " ";
+  document.getElementById("newDescription").value = " ";
+  document.getElementById("newPoster").value = " ";
 
-    let card = document.getElementById("cardNewMovie");
-    card.innerHTML = `
+  let card = document.getElementById("cardNewMovie");
+  card.innerHTML = `
     <div class="card" style="width: 18rem">
         <img src="imgs/cargar.png" class="card-img-top" alt="..." />
          <div class="card-body">
